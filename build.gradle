@@ -166,7 +166,13 @@ dependencies {
     compile 'org.spongepowered:configurate-yaml:3.6.1'
     compile 'com.flowpowered:flow-math:1.0.3'
     compile 'com.flowpowered:flow-noise:1.0.1-SNAPSHOT'
-
+    compile 'com.github.ben-manes.caffeine:caffeine:2.5.4'
+    compile 'com.github.ben-manes.caffeine:guava:2.5.4'
+    compile 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.1'
+    compile 'com.zaxxer:HikariCP:2.6.3'
+    compile 'org.mariadb.jdbc:mariadb-java-client:2.0.3'
+    compile 'com.h2database:h2:1.4.196'
 }
 
 outputJar {
