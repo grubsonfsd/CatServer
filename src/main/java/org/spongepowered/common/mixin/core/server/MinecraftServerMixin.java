@@ -266,41 +266,6 @@ public abstract class MinecraftServerMixin implements SubjectBridge, CommandSour
         this.impl$enableSaving = enabled;
     }
 
-    @Redirect(method = "getTabCompletions", at = @At(value = "INVOKE",
-            target = "Lcom/google/common/collect/Lists;newArrayList()Ljava/util/ArrayList;", remap = false))
-    private ArrayList<String> impl$useSpongeTabCompletionList() {
-        final ArrayList<String> list = new ArrayList<>();
-        this.impl$currentTabCompletionOptions = list;
-        return list;
-    }
-
-    @Inject(method = "getTabCompletions", at = @At(value = "RETURN", ordinal = 0))
-    private void impl$throwEventForTabCompletion(final ICommandSender sender, final String input, final BlockPos pos, final boolean usingBlock,
-            final CallbackInfoReturnable<List<String>> cir) {
-
-        final List<String> completions = checkNotNull(this.impl$currentTabCompletionOptions, "currentTabCompletionOptions");
-        this.impl$currentTabCompletionOptions = null;
-
-        Sponge.getCauseStackManager().pushCause(sender);
-        final TabCompleteEvent.Chat event = SpongeEventFactory.createTabCompleteEventChat(Sponge.getCauseStackManager().getCurrentCause(),
-                ImmutableList.copyOf(completions), completions, input, Optional.ofNullable(getTarget(sender, pos)), usingBlock);
-        Sponge.getEventManager().post(event);
-        Sponge.getCauseStackManager().popCause();
-        if (event.isCancelled()) {
-            completions.clear();
-        }
-    }
-
-    @Redirect(method = "getTabCompletions",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/command/ICommandManager;getTabCompletions(Lnet/minecraft/command/ICommandSender;Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;)Ljava/util/List;"))
-    private List<String> impl$useSpongeCommandManagerForSuggestions(
-        final ICommandManager manager, final ICommandSender sender, final String input, @Nullable final BlockPos pos, final ICommandSender sender_,
-        final String input_, final BlockPos pos_, final boolean hasTargetBlock) {
-        return ((SpongeCommandManager) SpongeImpl.getGame().getCommandManager()).getSuggestions((CommandSource) sender, input, getTarget(sender, pos), hasTargetBlock);
-    }
-
     @Nullable
     private static Location<World> getTarget(final ICommandSender sender, @Nullable final BlockPos pos) {
         @Nullable Location<World> targetPos = null;
