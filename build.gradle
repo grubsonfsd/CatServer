@@ -18,6 +18,10 @@ buildscript {
             name = 'spigotmc-public'
             url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
         }
+        maven {
+            name = 'spongepowered'
+            url = 'https://repo.spongepowered.org/maven'
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -153,6 +157,9 @@ dependencies {
     compile 'org.scala-lang:scala-reflect:2.11.1'
     compile 'org.scala-lang:scala-swing_2.11:1.0.1'
     compile 'org.scala-lang:scala-xml_2.11:1.0.2'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'com.google.errorprone:error_prone_annotations:2.0.15'
+    compile 'com.google.inject:guice:4.1.0'
     compile 'org.spongepowered:plugin-meta:0.4.1'
     compile 'org.spongepowered:configurate-hocon:3.6.1'
     compile 'org.spongepowered:configurate-gson:3.6.1'
@@ -193,6 +200,7 @@ genGradleProjects {
     addRepo('forge', 'http://files.minecraftforge.net/maven/')
     addRepo('sonatype', 'https://oss.sonatype.org/content/repositories/snapshots/')
     addRepo('spigotmc-public', 'https://hub.spigotmc.org/nexus/content/groups/public/')
+    addRepo('spongepowered', 'https://repo.spongepowered.org/maven')
 
     configurations.compile.resolvedConfiguration.resolvedArtifacts.collect { addCompileDep(it.moduleVersion.id.toString()) }
 
